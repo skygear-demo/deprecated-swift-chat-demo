@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "9AF600F46B4AD25A828653B047FCDB7765EE1286",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C21357EE18F5370C9C25FC870990464C11EB7924" : 9223372036854775807,
+    "25B4C02200FE66A08DDA23335E67733CF60CAB76" : 9223372036854775807,
+    "9AF600F46B4AD25A828653B047FCDB7765EE1286" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3F28C4A8-9722-4E9E-8227-1666EA24C3B1",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C21357EE18F5370C9C25FC870990464C11EB7924" : "..\/skygeario\/chat-SDK-iOS",
+    "25B4C02200FE66A08DDA23335E67733CF60CAB76" : "..\/skygeario\/skygear-SDK-iOS",
+    "9AF600F46B4AD25A828653B047FCDB7765EE1286" : "swift-chat-demo\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Swift Chat Demo",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Swift Chat Demo.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:skygeario\/skygear-SDK-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "25B4C02200FE66A08DDA23335E67733CF60CAB76"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:skygear-demo\/swift-chat-demo.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9AF600F46B4AD25A828653B047FCDB7765EE1286"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:skygeario\/chat-SDK-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C21357EE18F5370C9C25FC870990464C11EB7924"
+    }
+  ]
+}
