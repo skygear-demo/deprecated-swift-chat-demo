@@ -1,0 +1,6 @@
+framework module SKYKitChat {
+  umbrella header "SKYKitChat-umbrella.h"
+
+  export *
+  module * { export * }
+}
