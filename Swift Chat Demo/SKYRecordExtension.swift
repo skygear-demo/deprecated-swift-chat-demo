@@ -14,7 +14,7 @@ extension SKYRecord {
         guard self.recordID.recordType == "user" else {
             return nil
         }
-        
+
         return self.value(forKey: "name") as! String?
     }
 

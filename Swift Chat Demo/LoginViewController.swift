@@ -19,16 +19,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-    
+
     var delegate: LoginViewControllerDelegate?
     var theUserRecord: SKYRecord?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.updateLoginButton()
-        
+
         usernameField.becomeFirstResponder()
     }
 
@@ -36,21 +36,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func updateLoginButton() {
         let buttonDisplayText = isNewUser ? "Sign Up" : "Login"
         self.loginButton.setTitle(buttonDisplayText, for: .normal)
         self.loginButton.isEnabled = !usernameField.text!.isEmpty && !passwordField.text!.isEmpty
     }
-    
+
     var isNewUser: Bool {
         return flowSegmentedControl.selectedSegmentIndex == 0
     }
-    
-    var container : SKYContainer {
+
+    var container: SKYContainer {
         return SKYContainer.default()!
     }
-    
+
     @IBAction func toggleFlow(_ sender: Any) {
         updateLoginButton()
     }
@@ -58,7 +58,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBAction func tapLoginButton(_ sender: Any) {
         performLoginAction()
     }
-    
+
     func performLoginAction() {
         guard let username = usernameField.text else {
             return
@@ -66,7 +66,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         guard let password = passwordField.text else {
             return
         }
-        
+
         if isNewUser {
             container.signup(withUsername: username,
                              password: password) { (user, error) in
@@ -79,13 +79,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    
+
     func handleLoginResponse(user: SKYUser?, error: Error?) {
-        if let theError = error {
-            self.presentLoginAlert(error: theError)
+        if error != nil {
+            self.presentLoginAlert(error: error!)
             return
         }
-        
+
         if let theUser = user {
             if isNewUser {
                 let userRecord = SKYRecord(recordType: "user",
@@ -93,14 +93,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                            data: ["name": theUser.username])
                 container.publicCloudDatabase.save(userRecord, completion: { (savedUserRecord, _) in
                     ChatHelper.shared.cacheUserRecord(savedUserRecord)
+                    self.delegate?.loginViewController(self, didFinishWithUser: theUser)
                 })
-                performSegue(withIdentifier: "signup_user_name", sender: self)
             } else {
                 delegate?.loginViewController(self, didFinishWithUser: theUser)
             }
         }
     }
-    
+
     func presentLoginAlert(error: Error) {
         let title = isNewUser ? "Unable to Sign Up" : "Unable to Login"
         let alert = UIAlertController(title: title,
@@ -113,15 +113,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
-    
+
     @IBAction func usernameFieldDidChange(_ sender: Any) {
         self.updateLoginButton()
     }
-    
+
     @IBAction func passwordFieldDidChange(_ sender: Any) {
         self.updateLoginButton()
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameField {
             passwordField.becomeFirstResponder()
@@ -133,7 +133,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
         return false
     }
-    
+
     /*
     // MARK: - Navigation
 

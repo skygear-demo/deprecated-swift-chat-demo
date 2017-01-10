@@ -13,8 +13,8 @@ import JSQMessagesViewController
 import MBProgressHUD
 
 class ConversationsViewController: UITableViewController, ConversationDetailViewControllerDelegate {
-    
-    var chat = SKYContainer.default().chatExtension()
+
+    var chat = SKYContainer.default().chatExtension
     var conversations: [SKYUserConversation] = []
 
     override func viewDidLoad() {
@@ -25,9 +25,9 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
+
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         fetchUserConversations(completion: nil)
@@ -38,7 +38,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func fetchTotalUnreadCount() {
         chat?.fetchTotalUnreadCount(completion: { (dict, error) in
             if let unreadMessages = dict?["message"]?.intValue {
@@ -46,7 +46,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
             }
         })
     }
-    
+
     func fetchUserConversations(completion: (() -> Void)?) {
         chat?.fetchUserConversations { (conversations, error) in
             if let err = error {
@@ -54,21 +54,21 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
                 self.present(alert, animated: true, completion: nil)
                 return
             }
-            
+
             if let fetchedConversations = conversations {
                 print("Fetched \(fetchedConversations.count) user conversations.")
                 self.conversations = fetchedConversations
             }
-            
+
             self.tableView.reloadData()
             completion?()
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "new_conversation" {
             let navigationController: UINavigationController = segue.destination as! UINavigationController
-            let detailsVC:ConversationDetailViewController = navigationController.viewControllers.first as! ConversationDetailViewController
+            let detailsVC: ConversationDetailViewController = navigationController.viewControllers.first as! ConversationDetailViewController
             detailsVC.participantIDs = [SKYContainer.default().currentUserRecordID]
             detailsVC.adminIDs = [SKYContainer.default().currentUserRecordID]
             detailsVC.allowLeaving = false
@@ -84,7 +84,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
             }
         }
     }
-    
+
     func presentMessagesViewController(withUserConversation userConversation: SKYUserConversation) {
         let messagesVC = MessagesViewController()
         messagesVC.senderId = SKYContainer.default().currentUserRecordID
@@ -94,16 +94,16 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
     }
 
     @IBAction func refreshControlDidRefresh(_ sender: Any) {
-        self.fetchUserConversations { 
+        self.fetchUserConversations {
             self.refreshControl?.endRefreshing()
         }
-        
+
     }
-    
+
     func conversationDetailViewController(didCancel viewController: ConversationDetailViewController) {
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     func conversationDetailViewController(didFinish viewController: ConversationDetailViewController) {
         self.dismiss(animated: true, completion: nil)
 
@@ -124,16 +124,16 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
                                         self.present(alert, animated: true, completion: nil)
                                         return
                                     }
-                                    
+
                                     self.conversations.insert(userConversation!, at: 0)
                                     self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)],
                                                               with: .automatic)
-                                    
+
                                     self.performSegue(withIdentifier: "open_conversation", sender: self)
-                                    
+
         })
     }
-    
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -147,7 +147,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversation", for: indexPath)
-        
+
         let userConversation = conversations[indexPath.row]
 
         // Configure the cell...
@@ -155,7 +155,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
         cell.detailTextLabel?.text = userConversation.unreadCount > 0 ? String(userConversation.unreadCount) : ""
         return cell
     }
-    
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

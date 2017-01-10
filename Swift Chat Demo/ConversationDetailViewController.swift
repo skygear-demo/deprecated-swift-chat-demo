@@ -16,7 +16,7 @@ protocol ConversationDetailViewControllerDelegate {
 }
 
 class ConversationDetailViewController: UITableViewController {
-    
+
     var conversationID: String?
     var participantIDs: [String] = []
     var adminIDs: [String] = []
@@ -25,11 +25,11 @@ class ConversationDetailViewController: UITableViewController {
     var allowLeaving: Bool = true
     var showDismissalControls: Bool = false
     var delegate: ConversationDetailViewControllerDelegate?
-    
+
     var participantSection: Int {
         return 0
     }
-    
+
     var leaveSection: Int {
         return allowLeaving ? participantSection + 1 : -1
     }
@@ -42,10 +42,11 @@ class ConversationDetailViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
+
         if showDismissalControls {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonDidTap))
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonDidTap))
+            self.updateDoneButton()
         }
     }
 
@@ -53,15 +54,19 @@ class ConversationDetailViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     @IBAction func cancelButtonDidTap(_ sender: Any) {
         delegate?.conversationDetailViewController(didCancel: self)
     }
-    
+
     @IBAction func doneButtonDidTap(_ sender: Any) {
         delegate?.conversationDetailViewController(didFinish: self)
     }
-    
+
+    func updateDoneButton() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = self.participantIDs.count >= 2
+    }
+
     func leaveConversation(confirmed: Bool) {
         guard confirmed else {
             let alert = UIAlertController(title: "",
@@ -77,9 +82,9 @@ class ConversationDetailViewController: UITableViewController {
             self.present(alert, animated: true, completion: nil)
             return
         }
-        
+
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        let chat = SKYContainer.default().chatExtension()!
+        let chat = SKYContainer.default().chatExtension!
         chat.leave(conversationID: conversationID!) { (error) in
             hud.hide(animated: true)
             if error != nil {
@@ -90,12 +95,11 @@ class ConversationDetailViewController: UITableViewController {
                 self.present(alert, animated: true, completion: nil)
                 return
             }
-            
+
             let _ = self.navigationController?.popToRootViewController(animated: true)
         }
 
     }
-
 
     // MARK: - Table view data source
 
@@ -121,7 +125,7 @@ class ConversationDetailViewController: UITableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "add_new", for: indexPath)
                 return cell
             }
-            
+
             let cell = tableView.dequeueReusableCell(withIdentifier: "participant", for: indexPath)
             let userID = participantIDs[indexPath.row]
             cell.textLabel?.text = ChatHelper.shared.userRecord(userID: userID)?.chat_versatileNameOfUserRecord
@@ -133,7 +137,7 @@ class ConversationDetailViewController: UITableViewController {
         }
         return UITableViewCell(style: .default, reuseIdentifier: "unknown")
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == participantSection {
             return "Participants"
@@ -160,23 +164,25 @@ class ConversationDetailViewController: UITableViewController {
             // Delete the row from the data source
             participantIDs.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            self.updateDoneButton()
 //        } else if editingStyle == .insert {
 //            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == participantSection && indexPath.row == participantIDs.count {
             chat_startSearchUserFlow(completion: { (record) in
                 if let foundUser = record {
                     if self.participantIDs.contains(foundUser.recordID.recordName) {
-                        return;
+                        return
                     }
-                    
+
                     self.participantIDs.append(foundUser.recordID.recordName)
                     let indexPath = IndexPath(row: self.participantIDs.count - 1,
                                               section: self.participantSection)
                     tableView.insertRows(at: [indexPath], with: .automatic)
+                    self.updateDoneButton()
                 }
             })
         } else if indexPath.section == leaveSection {

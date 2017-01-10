@@ -13,7 +13,7 @@ extension SKYConversation {
         if (!(self.title ?? "").isEmpty) {
             return self.title!
         }
-        
+
         return ChatHelper.shared.generateConversationDefaultTitle(participantIDs: self.participantIds,
                                                                   includeCurrentUserName: false)
     }

@@ -12,7 +12,7 @@ import SKYKitChat
 import MBProgressHUD
 
 extension UIViewController {
-    
+
     func chat_startSearchUserFlow(completion: ((_ record: SKYRecord?) -> Void)?) {
         let alert = UIAlertController(title: "Search User", message: "", preferredStyle: .alert)
         alert.addTextField { (textField) in
@@ -26,10 +26,10 @@ extension UIViewController {
         }))
         present(alert, animated: true, completion: nil)
     }
-    
+
     func chat_startSearchUserFlow(username: String, completion: ((_ record: SKYRecord?) -> Void)?) {
         let container = SKYContainer.default()!
-        
+
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         container.queryUsers(byUsernames: [username]) { (records, err) in
             if let error = err {
@@ -39,7 +39,7 @@ extension UIViewController {
                 completion?(nil)
                 return
             }
-            
+
             guard let foundUser = records?.first else {
                 hud.label.text = "User Not Found"
                 hud.mode = .text
@@ -47,7 +47,7 @@ extension UIViewController {
                 completion?(nil)
                 return
             }
-            
+
             hud.hide(animated: true)
             ChatHelper.shared.cacheUserRecord(foundUser)
             completion?(foundUser)

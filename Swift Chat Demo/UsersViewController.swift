@@ -11,13 +11,13 @@ import SKYKit
 import SKYKitChat
 
 class UsersViewController: UITableViewController {
-    
+
     var allowDeleting: Bool = true
     let helper: ChatHelper = ChatHelper.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         NotificationCenter.default.addObserver(forName: NSNotification.Name.SKYContainerDidChangeCurrentUser,
                                                object: nil,
                                                queue: OperationQueue.main) { (note) in
@@ -26,15 +26,15 @@ class UsersViewController: UITableViewController {
 
         self.updateUserRecords()
     }
-    
-    var chat: SKYChatExtension = SKYContainer.default().chatExtension()!
-    
+
+    var chat: SKYChatExtension = SKYContainer.default().chatExtension!
+
     var userRecordIDs: [String] {
         get {
             guard let userRecordNames = UserDefaults().stringArray(forKey: "other_users") else {
                 return []
             }
-            
+
             return userRecordNames
 //            var ids: [SKYRecordID] = []
 //            for name in userRecordNames {
@@ -42,7 +42,7 @@ class UsersViewController: UITableViewController {
 //            }
 //            return ids
         }
-        
+
         set(value) {
 //            var ids: [String] = []
 //            
@@ -59,16 +59,16 @@ class UsersViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func clearAllUserRecords() {
         self.userRecordIDs = []
     }
-    
+
     func updateUserRecords() {
         guard self.userRecordIDs.count > 0 else {
             return
         }
-        
+
         helper.fetchUserRecords(userIDs: userRecordIDs) { (_, _) in
             self.tableView.reloadData()
         }
@@ -76,29 +76,29 @@ class UsersViewController: UITableViewController {
 
     @IBAction func tapAddButton(_ sender: Any) {
         self.chat_startSearchUserFlow { (record) in
-            guard let foundUser:SKYRecord = record else {
+            guard let foundUser: SKYRecord = record else {
                 return
             }
-            
+
             guard !self.userRecordIDs.contains(foundUser.recordID.recordName) else {
                 print("User already added to list")
                 return
             }
-            
+
             self.userRecordIDs.append(foundUser.recordID.recordName)
             self.tableView.insertRows(at: [IndexPath.init(row: self.userRecordIDs.count - 1, section: 0)],
                                       with: UITableViewRowAnimation.automatic)
 
         }
     }
-    
+
     func userRecord(indexPath: IndexPath) -> SKYRecord? {
         guard indexPath.row < userRecordIDs.count else {
             return nil
         }
         return helper.userRecord(userID: userRecordIDs[indexPath.row])
     }
-    
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -108,24 +108,24 @@ class UsersViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userRecordIDs.count
     }
-    
+
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return allowDeleting
     }
-    
+
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
+
         guard let userRecord = self.userRecord(indexPath: indexPath) else {
-            return;
+            return
         }
-        
+
         if editingStyle == .delete {
             if let index = userRecordIDs.index(of: userRecord.recordID.recordName) {
                 userRecordIDs.remove(at: index)
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
-        
+
     }
 
     /*

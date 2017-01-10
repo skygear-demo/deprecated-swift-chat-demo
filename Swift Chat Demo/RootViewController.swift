@@ -10,16 +10,16 @@ import UIKit
 import SKYKit
 
 class RootViewController: UITabBarController, LoginViewControllerDelegate {
-    
+
     var container = SKYContainer.default()!
-    var overlayView : UIView? = nil
+    var overlayView: UIView? = nil
     let helper = ChatHelper.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
+
         NotificationCenter.default.addObserver(forName: NSNotification.Name.SKYContainerDidChangeCurrentUser,
                                                object: nil,
                                                queue: OperationQueue.main) { (note) in
@@ -27,19 +27,19 @@ class RootViewController: UITabBarController, LoginViewControllerDelegate {
                                                     self.presentLoginViewController(animated: true)
                                                 }
         }
-        
+
         if !helper.isLoggedIn {
             overlayView = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateInitialViewController()?.view
-            overlayView?.frame = self.view.bounds;
-            overlayView?.autoresizingMask = [.flexibleWidth, .flexibleHeight];
+            overlayView?.frame = self.view.bounds
+            overlayView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
             self.view.addSubview(overlayView!)
         }
         helper.fetchCurrentUserRecord { (_) in
-            
+
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -52,11 +52,11 @@ class RootViewController: UITabBarController, LoginViewControllerDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     var loginViewControllerPresenting: Bool {
         return self.presentedViewController != nil
     }
-    
+
     func presentLoginViewController(animated: Bool) {
         if (animated) {
             self.performSegue(withIdentifier: "login", sender: self)
@@ -70,7 +70,7 @@ class RootViewController: UITabBarController, LoginViewControllerDelegate {
             })
         }
     }
-    
+
     func setLoginViewControllerDelegate(navigationController: UINavigationController) {
         let loginVC = navigationController.viewControllers.first as? LoginViewController
         loginVC?.delegate = self
@@ -79,7 +79,7 @@ class RootViewController: UITabBarController, LoginViewControllerDelegate {
     func loginViewController(_ viewController: LoginViewController, didFinishWithUser user: SKYUser) {
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "login" {
             self.setLoginViewControllerDelegate(navigationController: segue.destination as! UINavigationController)
