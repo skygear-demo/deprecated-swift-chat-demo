@@ -32,7 +32,7 @@ website](https://developer.apple.com/).
 
 You also need to configure your Skygear Server with the [chat
 plugin](https://github.com/SkygearIO/chat/). The easiest way to get started
-is to sign up an account on [Skygear Cloud](https://portal.skygear.io/). See
+is to sign up an account on [Skygear Portal](https://portal.skygear.io/). See
 [documentation](https://docs.skygear.io/) for details.
 
 To try out this demo:
