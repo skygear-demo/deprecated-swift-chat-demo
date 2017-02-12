@@ -68,6 +68,10 @@ class MessagesViewController: JSQMessagesViewController {
                 self.finishReceivingMessage(animated: true)
             }
         })
+        typingObserver = chat.subscribeToTypingIndicator(in: userConversation.conversation, handler: { (indicator) in
+            print("Receiving typing event")
+            self.promptTypingIndicator(indicator)
+        })
     }
 
     func unsubscribeFromNotifications() {
@@ -86,7 +90,24 @@ class MessagesViewController: JSQMessagesViewController {
         }
 
         var typingUserDisplayName: String?
-
+        let typingUserIDs = indicator.typingUserIDs
+        if typingUserIDs.count == 0 {
+            // No one is typing.
+            self.navigationItem.prompt = nil;
+            return;
+        } else if typingUserIDs.count == 1 {
+            if let typingUser = ChatHelper.shared.userRecord(userID: typingUserIDs.first!) { // Get the first user record by first ID in typingUserIDs
+                typingUserDisplayName = typingUser.chat_nameOfUserRecord // Get the displayname of the user record
+            }
+            
+            if typingUserDisplayName != nil {
+                self.navigationItem.prompt = "\(typingUserDisplayName!) is typing..."
+            } else {
+                self.navigationItem.prompt = "Someone is typing..."
+            }
+        } else {
+            self.navigationItem.prompt = "Some people are typing..."
+        }
         typingPromptTimer = Timer.scheduledTimer(withTimeInterval: 10.0,
                                        repeats: false,
                                        block: { (_) in
