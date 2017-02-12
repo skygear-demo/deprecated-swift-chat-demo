@@ -85,7 +85,19 @@ class ConversationDetailViewController: UITableViewController {
 
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         let chat = SKYContainer.default().chatExtension!
-
+        chat.leave(conversationID: conversationID!) { (error) in
+            hud.hide(animated: true)
+            if error != nil {
+                let alert = UIAlertController(title: "Unable to Leave Conversation",
+                                              message: error!.localizedDescription,
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+            
+            let _ = self.navigationController?.popToRootViewController(animated: true)
+        }
     }
 
     // MARK: - Table view data source
