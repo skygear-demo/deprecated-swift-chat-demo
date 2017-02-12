@@ -17,9 +17,14 @@ class RootViewController: UITabBarController, LoginViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.SKYContainerDidChangeCurrentUser,
+                                               object: nil,
+                                               queue: OperationQueue.main) { (note) in
+                                                if !self.helper.isLoggedIn && !self.loginViewControllerPresenting {
+                                                    self.presentLoginViewController(animated: true)
+                                                }
+        }
 
-        // Do any additional setup after loading the view.
-        
         if !helper.isLoggedIn {
             overlayView = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateInitialViewController()?.view
             overlayView?.frame = self.view.bounds

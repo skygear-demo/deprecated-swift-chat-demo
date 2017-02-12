@@ -31,7 +31,6 @@ extension UIViewController {
         let container = SKYContainer.default()!
 
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        
         container.queryUsers(byUsernames: [username]) { (records, err) in
             if let error = err {
                 let alert = UIAlertController(title: "Cannot Find User", message: error.localizedDescription, preferredStyle: .alert)
@@ -40,7 +39,6 @@ extension UIViewController {
                 completion?(nil)
                 return
             }
-            
             // Get the first result in the query as the found user
             guard let foundUser = records?.first else {
                 hud.label.text = "User Not Found"
@@ -49,11 +47,10 @@ extension UIViewController {
                 completion?(nil)
                 return
             }
-            
+
             hud.hide(animated: true)
             ChatHelper.shared.cacheUserRecord(foundUser)
             completion?(foundUser)
         }
-        
     }
 }

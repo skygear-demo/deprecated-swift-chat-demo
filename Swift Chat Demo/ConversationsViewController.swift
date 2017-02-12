@@ -38,6 +38,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
     func fetchTotalUnreadCount() {
         chat?.fetchTotalUnreadCount(completion: { (dict, error) in
             if let unreadMessages = dict?["message"]?.intValue {
@@ -45,6 +46,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
             }
         })
     }
+
     func fetchUserConversations(completion: (() -> Void)?) {
         chat?.fetchUserConversations { (conversations, error) in
             if let err = error {
@@ -52,16 +54,17 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
                 self.present(alert, animated: true, completion: nil)
                 return
             }
-            
+
             if let fetchedConversations = conversations {
                 print("Fetched \(fetchedConversations.count) user conversations.")
                 self.conversations = fetchedConversations
             }
-            
+
             self.tableView.reloadData()
             completion?()
         }
     }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "new_conversation" {
             let navigationController: UINavigationController = segue.destination as! UINavigationController
@@ -94,6 +97,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
         self.fetchUserConversations {
             self.refreshControl?.endRefreshing()
         }
+
     }
 
     func conversationDetailViewController(didCancel viewController: ConversationDetailViewController) {
@@ -114,19 +118,19 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
                                     hud.hide(animated: true)
                                     if error != nil {
                                         let alert = UIAlertController(title: "Unable to Create",
-                                                                      message: error!.localizedDescription,
-                                                                      preferredStyle: .alert)
+                                                          message: error!.localizedDescription,
+                                                          preferredStyle: .alert)
                                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                                         self.present(alert, animated: true, completion: nil)
                                         return
                                     }
-                                    
+
                                     self.conversations.insert(userConversation!, at: 0)
                                     self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)],
                                                               with: .automatic)
-                                    
+
                                     self.performSegue(withIdentifier: "open_conversation", sender: self)
-                                    
+
         })
     }
 
