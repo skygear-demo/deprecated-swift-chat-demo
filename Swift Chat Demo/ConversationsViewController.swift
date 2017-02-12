@@ -30,14 +30,30 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        fetchUserConversations(completion: nil)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    func fetchUserConversations(completion: (() -> Void)?) {
+        chat?.fetchUserConversations { (conversations, error) in
+            if let err = error {
+                let alert = UIAlertController(title: "Unable to load conversations", message: err.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+            
+            if let fetchedConversations = conversations {
+                print("Fetched \(fetchedConversations.count) user conversations.")
+                self.conversations = fetchedConversations
+            }
+            
+            self.tableView.reloadData()
+            completion?()
+        }
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "new_conversation" {
             let navigationController: UINavigationController = segue.destination as! UINavigationController
@@ -67,7 +83,9 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
     }
 
     @IBAction func refreshControlDidRefresh(_ sender: Any) {
-
+        self.fetchUserConversations {
+            self.refreshControl?.endRefreshing()
+        }
     }
 
     func conversationDetailViewController(didCancel viewController: ConversationDetailViewController) {
