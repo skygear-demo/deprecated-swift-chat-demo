@@ -95,9 +95,10 @@ class ConversationDetailViewController: UITableViewController {
                 self.present(alert, animated: true, completion: nil)
                 return
             }
-            
+
             let _ = self.navigationController?.popToRootViewController(animated: true)
         }
+
     }
 
     // MARK: - Table view data source

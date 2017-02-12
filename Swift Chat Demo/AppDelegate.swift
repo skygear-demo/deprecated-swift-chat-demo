@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         SKYContainer.default().configAddress("<put your server endpoint here")
         SKYContainer.default().configure(withAPIKey: "put your api key here")
-        
         return true
     }
 

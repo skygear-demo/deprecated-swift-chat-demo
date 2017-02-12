@@ -30,6 +30,7 @@ class DirectConversationsViewController: UsersViewController {
             completion(userConversation, nil)
             return
         }
+
         chat.createDirectConversation(userID: userRecord.recordID.recordName,
                                       title: "",
                                       metadata: nil) { (c, err) in
@@ -37,7 +38,7 @@ class DirectConversationsViewController: UsersViewController {
                                             completion(nil, error)
                                             return
                                         }
-                                        
+
                                         if let userConversation = c {
                                             self.userConversations[userRecord.recordID] = userConversation
                                             completion(userConversation, nil)

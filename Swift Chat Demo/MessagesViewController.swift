@@ -59,6 +59,7 @@ class MessagesViewController: JSQMessagesViewController {
         guard let userConversation = self.conversation else {
             return
         }
+
         messageObserver = chat.subscribeToMessages(in: userConversation.conversation, handler: { (event, message) in
             print("Received message event")
             if event == SKYChatRecordChangeEvent.create && !self.messages.contains(message) && message.creatorUserRecordID != SKYContainer.default().currentUserRecordID
@@ -108,6 +109,7 @@ class MessagesViewController: JSQMessagesViewController {
         } else {
             self.navigationItem.prompt = "Some people are typing..."
         }
+
         typingPromptTimer = Timer.scheduledTimer(withTimeInterval: 10.0,
                                        repeats: false,
                                        block: { (_) in
@@ -136,7 +138,7 @@ class MessagesViewController: JSQMessagesViewController {
                                 self.present(alert, animated: true, completion: nil)
                                 return
                             }
-                            
+
                             if let messages = messages {
                                 self.messages = messages.reversed()
                                 self.reloadViews()
@@ -153,7 +155,9 @@ class MessagesViewController: JSQMessagesViewController {
         for recordName in (conversation?.conversation.participantIds)! {
             userRecordIDs.append(SKYRecordID(recordType: "user", name: recordName))
         }
+
         print("Fetching participants for the conversation: \(userRecordIDs)")
+
         db?.fetchRecords(withIDs: userRecordIDs,
                          completionHandler: { (usermap, err) in
                             var newUsers: [String : SKYRecord] = [:]
@@ -183,7 +187,7 @@ class MessagesViewController: JSQMessagesViewController {
 
         return users[message.creatorUserRecordID]
     }
-    
+
     func triggerTypingEvent(_ event: SKYChatTypingEvent) {
         if event == lastTypingEvent {
             if lastTypingEventDate != nil && lastTypingEventDate!.timeIntervalSinceNow > -1 {
@@ -199,7 +203,7 @@ class MessagesViewController: JSQMessagesViewController {
         lastTypingEvent = event
         lastTypingEventDate = Date.init()
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "details" {
             let detailsVC = segue.destination as! ConversationDetailViewController
@@ -267,11 +271,13 @@ class MessagesViewController: JSQMessagesViewController {
 
     override func textViewDidChange(_ textView: UITextView) {
         super.textViewDidChange(textView)
+
         triggerTypingEvent(.begin)
     }
 
     override func textViewDidEndEditing(_ textView: UITextView) {
         super.textViewDidEndEditing(textView)
+
         triggerTypingEvent(.pause)
     }
 
@@ -293,7 +299,7 @@ class MessagesViewController: JSQMessagesViewController {
                 guard let transientMessageIndex = self.messages.index(of: message) else {
                     return
                 }
-                
+
                 self.messages[transientMessageIndex] = sentMessage
                 self.collectionView.reloadData()
             }
