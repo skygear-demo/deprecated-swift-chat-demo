@@ -207,6 +207,23 @@ class MessagesViewController: JSQMessagesViewController {
     }
 
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
-
+        // We need to firstly create a SKYMessage object with body, creatorUserRecordID.
+        let message = SKYMessage()!
+        message.body = text
+        message.creatorUserRecordID = SKYContainer.default().currentUserRecordID // The creator ID is the ID of the current user
+        // Send the message to the conversation
+        chat.addMessage(message, to: (conversation?.conversation)!, completion: { (msg, _) in
+            if let sentMessage = msg {
+                guard let transientMessageIndex = self.messages.index(of: message) else {
+                    return
+                }
+                
+                self.messages[transientMessageIndex] = sentMessage
+                self.collectionView.reloadData()
+            }
+        })
+        self.messages.append(message)
+        self.finishSendingMessage(animated: true)
+        
     }
 }
