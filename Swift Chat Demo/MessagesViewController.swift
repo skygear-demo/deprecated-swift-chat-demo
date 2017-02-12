@@ -123,7 +123,23 @@ class MessagesViewController: JSQMessagesViewController {
 
         return users[message.creatorUserRecordID]
     }
-
+    
+    func triggerTypingEvent(_ event: SKYChatTypingEvent) {
+        if event == lastTypingEvent {
+            if lastTypingEventDate != nil && lastTypingEventDate!.timeIntervalSinceNow > -1 {
+                // Last event is published less than 1 second ago.
+                // Throttle so the server is not overwhelmed with typing events.
+                return
+            }
+        } else if event == .pause && event != .begin {
+            // No need to send the pause typing event when typing not yet started.
+            return
+        }
+        chat.sendTypingIndicator(event, in: (conversation?.conversation)!)
+        lastTypingEvent = event
+        lastTypingEventDate = Date.init()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "details" {
             let detailsVC = segue.destination as! ConversationDetailViewController
@@ -191,12 +207,12 @@ class MessagesViewController: JSQMessagesViewController {
 
     override func textViewDidChange(_ textView: UITextView) {
         super.textViewDidChange(textView)
-
+        triggerTypingEvent(.begin)
     }
 
     override func textViewDidEndEditing(_ textView: UITextView) {
         super.textViewDidEndEditing(textView)
-
+        triggerTypingEvent(.pause)
     }
 
     override func didPressAccessoryButton(_ sender: UIButton!) {
@@ -224,6 +240,6 @@ class MessagesViewController: JSQMessagesViewController {
         })
         self.messages.append(message)
         self.finishSendingMessage(animated: true)
-        
+        triggerTypingEvent(.finished)
     }
 }
