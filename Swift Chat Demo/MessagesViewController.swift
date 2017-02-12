@@ -59,7 +59,15 @@ class MessagesViewController: JSQMessagesViewController {
         guard let userConversation = self.conversation else {
             return
         }
-
+        messageObserver = chat.subscribeToMessages(in: userConversation.conversation, handler: { (event, message) in
+            print("Received message event")
+            if event == SKYChatRecordChangeEvent.create && !self.messages.contains(message) && message.creatorUserRecordID != SKYContainer.default().currentUserRecordID
+            {
+                self.messages.append(message)
+                self.reloadViews()
+                self.finishReceivingMessage(animated: true)
+            }
+        })
     }
 
     func unsubscribeFromNotifications() {
