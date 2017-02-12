@@ -81,7 +81,27 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
         let title = ChatHelper.shared.generateConversationDefaultTitle(participantIDs: participantIDs,
                                                                        includeCurrentUserName: true)
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-
+        chat?.createConversation(participantIDs: viewController.participantIDs,
+                                 title: title,
+                                 metadata: nil,
+                                 completion: { (userConversation, error) in
+                                    hud.hide(animated: true)
+                                    if error != nil {
+                                        let alert = UIAlertController(title: "Unable to Create",
+                                                                      message: error!.localizedDescription,
+                                                                      preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                                        self.present(alert, animated: true, completion: nil)
+                                        return
+                                    }
+                                    
+                                    self.conversations.insert(userConversation!, at: 0)
+                                    self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)],
+                                                              with: .automatic)
+                                    
+                                    self.performSegue(withIdentifier: "open_conversation", sender: self)
+                                    
+        })
     }
 
     // MARK: - Table view data source
