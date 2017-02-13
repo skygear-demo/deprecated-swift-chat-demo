@@ -31,11 +31,19 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         fetchUserConversations(completion: nil)
+        fetchTotalUnreadCount()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    func fetchTotalUnreadCount() {
+        chat?.fetchTotalUnreadCount(completion: { (dict, error) in
+            if let unreadMessages = dict?["message"]?.intValue {
+                self.navigationController?.tabBarItem.badgeValue = unreadMessages > 0 ? String(unreadMessages) : nil
+            }
+        })
     }
     func fetchUserConversations(completion: (() -> Void)?) {
         chat?.fetchUserConversations { (conversations, error) in
