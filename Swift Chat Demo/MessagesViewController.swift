@@ -135,9 +135,25 @@ class MessagesViewController: JSQMessagesViewController {
         guard conversation != nil else {
             return
         }
-
+        for recordName in (conversation?.conversation.participantIds)! {
+            userRecordIDs.append(SKYRecordID(recordType: "user", name: recordName))
+        }
         print("Fetching participants for the conversation: \(userRecordIDs)")
-
+        db?.fetchRecords(withIDs: userRecordIDs,
+                         completionHandler: { (usermap, err) in
+                            var newUsers: [String : SKYRecord] = [:]
+                            for (k, v) in usermap! {
+                                guard let recordID = k as? SKYRecordID else {
+                                    continue
+                                }
+                                guard let userRecord = v as? SKYRecord else {
+                                    continue
+                                }
+                                newUsers[recordID.recordName] = userRecord
+                            }
+                            self.users = newUsers
+                            self.reloadViews()
+        }, perRecordErrorHandler: nil)
     }
 
     func isOutgoingSKYMessage(_ message: SKYMessage) -> Bool {
