@@ -126,7 +126,22 @@ class MessagesViewController: JSQMessagesViewController {
             print("No conversation")
             return
         }
-
+        chat.fetchMessages(conversation: conversation.conversation,
+                           limit: 100,
+                           beforeTime: nil,
+                           completion: { (messages, error) in
+                            if let err = error {
+                                let alert = UIAlertController(title: "Unable to load", message: err.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
+                                return
+                            }
+                            
+                            if let messages = messages {
+                                self.messages = messages.reversed()
+                                self.reloadViews()
+                            }
+        })
     }
 
     func fetchAllParticipants() {
