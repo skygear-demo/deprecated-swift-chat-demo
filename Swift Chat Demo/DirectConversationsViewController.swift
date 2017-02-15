@@ -31,19 +31,6 @@ class DirectConversationsViewController: UsersViewController {
             return
         }
 
-        chat.createDirectConversation(userID: userRecord.recordID.recordName,
-                                      title: "",
-                                      metadata: nil) { (c, err) in
-                                        if let error = err {
-                                            completion(nil, error)
-                                            return
-                                        }
-
-                                        if let userConversation = c {
-                                            self.userConversations[userRecord.recordID] = userConversation
-                                            completion(userConversation, nil)
-                                        }
-        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

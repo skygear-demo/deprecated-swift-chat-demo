@@ -30,39 +30,12 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        fetchUserConversations(completion: nil)
-        fetchTotalUnreadCount()
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-    func fetchTotalUnreadCount() {
-        chat?.fetchTotalUnreadCount(completion: { (dict, error) in
-            if let unreadMessages = dict?["message"]?.intValue {
-                self.navigationController?.tabBarItem.badgeValue = unreadMessages > 0 ? String(unreadMessages) : nil
-            }
-        })
-    }
-
-    func fetchUserConversations(completion: (() -> Void)?) {
-        chat?.fetchUserConversations { (conversations, error) in
-            if let err = error {
-                let alert = UIAlertController(title: "Unable to load conversations", message: err.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)
-                self.present(alert, animated: true, completion: nil)
-                return
-            }
-
-            if let fetchedConversations = conversations {
-                print("Fetched \(fetchedConversations.count) user conversations.")
-                self.conversations = fetchedConversations
-            }
-
-            self.tableView.reloadData()
-            completion?()
-        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -94,9 +67,6 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
     }
 
     @IBAction func refreshControlDidRefresh(_ sender: Any) {
-        self.fetchUserConversations {
-            self.refreshControl?.endRefreshing()
-        }
 
     }
 
@@ -111,27 +81,7 @@ class ConversationsViewController: UITableViewController, ConversationDetailView
         let title = ChatHelper.shared.generateConversationDefaultTitle(participantIDs: participantIDs,
                                                                        includeCurrentUserName: true)
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        chat?.createConversation(participantIDs: viewController.participantIDs,
-                                 title: title,
-                                 metadata: nil,
-                                 completion: { (userConversation, error) in
-                                    hud.hide(animated: true)
-                                    if error != nil {
-                                        let alert = UIAlertController(title: "Unable to Create",
-                                                          message: error!.localizedDescription,
-                                                          preferredStyle: .alert)
-                                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                                        self.present(alert, animated: true, completion: nil)
-                                        return
-                                    }
 
-                                    self.conversations.insert(userConversation!, at: 0)
-                                    self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)],
-                                                              with: .automatic)
-
-                                    self.performSegue(withIdentifier: "open_conversation", sender: self)
-
-        })
     }
 
     // MARK: - Table view data source
