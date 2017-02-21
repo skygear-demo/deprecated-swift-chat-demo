@@ -6,20 +6,20 @@ This Swift Chat Tutorial guides you to complete the chat app in [Swift Chat Demo
 <b>The use of this tutorial:</b>
 - We have different branches for different steps in this repo. Even if you suck in 1 part, you can skip that step and git clone the next branch to continue the tutorial. You can also find the previous step answer in next branch.
 - The convered feature in this tutorial includes:
-    - [Part 1: Configuration of Skygear](#part-1-configuration-of-skygear)
-    - [Note 1 - Basic Usage of `SKYKit` and `SKYChatKit`](#note-1-basic-usage-of-skykit-and-skychatkit)
-    - [Part 2: Find Users](#part-2-find-users)
-    - [Part 3: Send Message](#part-3-send-message)
-    - [Part 4: Create Direct Chat / Group Chat](#part-4-create-direct-chat-or-group-chat)
-    - [Part 5: Leave a conversation](#part-5-leave-a-conversation)
-    - [Part 6: Trigger Typing Event](#part-6-trigger-a-typing-event)
-    - [Part 7: Subscription To New Message](#part-7-subscribe-to-new-message)
-    - [Part 8: Subscription To Typing Indicator](#part-8-subscribe-to-typing-indicator)
-    - [Part 9: Fetch Conversations](#part-9-fetch-conversations)
-    - [Part 10: Participants of conversation](#part-10-participants-of-conversation)
-    - [Part 11: Unread Count](#part-11-unread-count)
-    - [Part 12: Chat History](#part-12-chat-history)
-    - [Part 13: Notification](#part-13-notification)
+    - [Part 1: Configuration of Skygear](#part-1---configuration-of-skygear)
+    - [Note 1 - Basic Usage of `SKYKit` and `SKYChatKit`](#note1---basic-usage-of-skykit-and-skychatkit)
+    - [Part 2: Find Users](#part-2---find-users)
+    - [Part 3: Send Message](#part-3---send-message)
+    - [Part 4: Create Direct Chat / Group Chat](#part-4---create-direct-chat-or-group-chat)
+    - [Part 5: Leave a conversation](#part-5---leave-a-conversation)
+    - [Part 6: Trigger Typing Event](#part-6---trigger-a-typing-event)
+    - [Part 7: Subscription To New Message](#part-7---subscribe-to-new-message)
+    - [Part 8: Subscription To Typing Indicator](#part-8---subscribe-to-typing-indicator)
+    - [Part 9: Fetch Conversations](#part-9---fetch-conversations)
+    - [Part 10: Participants of conversation](#part-10---participants-of-conversation)
+    - [Part 11: Unread Count](#part-11---unread-count)
+    - [Part 12: Chat History](#part-12---chat-history)
+    - [Part 13: Notification](#part-13---notification)
 
 <br>
 
