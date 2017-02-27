@@ -207,7 +207,7 @@ chat.leave(conversationID: conversationID!) { (error) in
 You may also use another function `leave(conversation: SKYConversation, completion: ((Error?) -> Void)?)`. Documnetaion [here](http://cocoadocs.org/docsets/SKYKitChat/0.0.1/Classes/SKYChatExtension.html#//api/name/leaveConversation:completion:).
 
 ## Part 6 - Trigger a typing event
-The `SKYChatKit` provide a function for sending the typing indicator to the conversation participants. The users in the convseration can know who is now typing.
+The `SKYChatKit` provides a function for sending the typing indicator to the conversation participants. The users in the convseration can know who is now typing.
 
 Part 6.1 (In `MessagesViewController.swift`) [Jump to code](https://github.com/skygear-demo/swift-chat-demo/blob/master/Swift%20Chat%20Demo/MessagesViewController.swift#L186-L200)
 ```swift
@@ -259,14 +259,14 @@ messageObserver = chat.subscribeToMessages(in: userConversation.conversation, ha
 })
 ```
 
-You can use the function `subscribeToMessages(in: SKYConversation, handler: (SKYChatRecordChangeEvent, SKYMessage) -> Void)` for getting the new messages record change event in real time.
+You can use the function `subscribeToMessages(in: SKYConversation, handler: (SKYChatRecordChangeEvent, SKYMessage) -> Void)` for getting the new message record change event in real time.
 
 The `SKYChatRecordChangeEvent` consist of three type of events:
 - create
 - delete
 - update
 
-The action to be done when received an event can be defined in the handler. For example:
+The action will be done when it receives an event defined in the handler. For example:
 ```swift
 messageObserver = chat.subscribeToMessages(in: userConversation.conversation, handler: { (event, message) in
     print("Received message event")
@@ -279,7 +279,7 @@ messageObserver = chat.subscribeToMessages(in: userConversation.conversation, ha
 })
 ```
 
-Only when the change event is create, the array of messages does not contain that message and that is not a sent message, the messages array will be appended and reload the view to show the latest message.
+When the change event is created, the array of messages does not contain that message and that is not a sent message. The messages array will be appended and reloaded the view to show the latest message.
 
 
 ## Part 8 - Subscribe to Typing Indicator
@@ -362,7 +362,7 @@ self.fetchUserConversations {
 }
 ```
 
-There is two more methods to fetch the user conversation ([Documentation](http://cocoadocs.org/docsets/SKYKitChat/0.0.1/Classes/SKYChatExtension.html#//api/name/fetchUserConversationWithConversationID:completion:NS_SWIFT_NAME:)):
+There are two more methods to fetch the user conversation ([Documentation](http://cocoadocs.org/docsets/SKYKitChat/0.0.1/Classes/SKYChatExtension.html#//api/name/fetchUserConversationWithConversationID:completion:NS_SWIFT_NAME:)):
 - `fetchUserConversation(conversationID: String, completion: SKYChatUserConversationCompletion?)`
 - `fetchUserConversation(conversation: SKYConversation, completion: SKYChatUserConversationCompletion?)`
 
@@ -455,7 +455,7 @@ chat.fetchMessages(conversation: conversation.conversation,
 ```
 
 ## Part 13 - Notification
-There is serveral `NSNotification.Name` extentions from SKYKit, including:
+There are serveral `NSNotification.Name` extentions from SKYKit, including:
 - `SKYContainerDidChangeCurrentUser`
 - `SKYChatDidReceiveRecordChange`
 - `SKYContainerDidRegisterDevice`
