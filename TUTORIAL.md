@@ -5,7 +5,7 @@ This Swift Chat Tutorial guides you to complete the chat app in [Swift Chat Demo
 
 <b>The use of this tutorial:</b>
 - We have different branches for different steps in this repo. Even if you suck in 1 part, you can skip that step and git clone the next branch to continue the tutorial. You can also find the previous step answer in next branch.
-- The convered feature in this tutorial includes:
+- The features covered in this tutorial include:
     - [Part 1: Configuration of Skygear](#part-1---configuration-of-skygear)
     - [Note 1 - Basic Usage of `SKYKit` and `SKYChatKit`](#note1---basic-usage-of-skykit-and-skychatkit)
     - [Part 2: Find Users](#part-2---find-users)
@@ -58,7 +58,7 @@ This Swift Chat Tutorial guides you to complete the chat app in [Swift Chat Demo
      SKYContainer.default().currentUserRecordID
      ```
 
-When you see `container` or `chat` later in this tutorial, if not specify, they are both regarding to the variable declaration above.
+When you see `container` or `chat` later in this tutorial, if not specify, they are both regarding the variable declaration above.
 
 ## Part 2 - Find Users
 The user record can be found by querying the `SKYContainer`. By the method `queryUsers(byUsernames: [String]!, completionHandler: (([SKYRecord]?, Error?) -> Void)!)` provided in the `SKYContainer`, we can get the `SKYRecord` of the provided usernames.
@@ -93,7 +93,7 @@ container.queryUsers(byUsernames: [username]) { (records, err) in
 
 
 ## Part 3 - Send Message
-The codes related to send messages in the demo app are mainly in `MessagesViewController.swift`.
+The codes related to sending messages in the demo app are mainly in `MessagesViewController.swift`.
 
 We can use `addMessage(message: SKYMessage, to: SKYConversation, completion:  SKYChatMessageCompletion?)` to send out the message to the Cloud Database. Documentation [here](http://cocoadocs.org/docsets/SKYKitChat/0.0.1/Classes/SKYChatExtension.html#//api/name/addMessage:toConversation:completion:NS_SWIFT_NAME:).
 
@@ -132,7 +132,7 @@ self.finishSendingMessage(animated: true)
 ## Part 4 - Create Direct Chat or Group Chat
 In `SKYChatKit`, we use `SKYConversation` to create conversation.
 
-There are two location in the tutorial app that is creating the conversation. The first one is in the `DirectConversationsViewController.swift`. (Marked as Part 4.1)
+There are two locations in the tutorial app that are creating the conversation. The first one is in the `DirectConversationsViewController.swift`. (Marked as Part 4.1)
 
 ### Direct Chat
 Step 4.1 (In `DirectConversationsViewController.swift`) [Jump to code](https://github.com/skygear-demo/swift-chat-demo/blob/master/Swift%20Chat%20Demo/DirectConversationsViewController.swift#L34-L46)
@@ -155,7 +155,7 @@ chat.createDirectConversation(userID: userRecord.recordID.recordName,
 The function `createDirectConversation(userID: String, title: String, metadata: <String, Any>, completion: SKYChatUserConversationCompletion)` can create a direct conversation with a userID.
 
 ### Group Chat
-If you would like to create a conversation with multiple userIDs, you may try to use another function `createConversation(participantsID: [String], title: String, metadata: <String, Any>, completion: SKYChatUserConversationCompletion)`. With this function you can pass multiple userIds to create conversation among them.
+If you would like to create a conversation with multiple userIDs, you may try to use another function `createConversation(participantsID: [String], title: String, metadata: <String, Any>, completion: SKYChatUserConversationCompletion)`. With this function, you can pass multiple userIds to create conversation among them.
 
 You may see the usage in `ConversationsViewController.swift`
 
@@ -207,7 +207,7 @@ chat.leave(conversationID: conversationID!) { (error) in
 You may also use another function `leave(conversation: SKYConversation, completion: ((Error?) -> Void)?)`. Documnetaion [here](http://cocoadocs.org/docsets/SKYKitChat/0.0.1/Classes/SKYChatExtension.html#//api/name/leaveConversation:completion:).
 
 ## Part 6 - Trigger a typing event
-The `SKYChatKit` provides a function for sending the typing indicator to the conversation participants. The users in the convseration can know who is now typing.
+The `SKYChatKit` provides a function for sending the typing indicator to the conversation participants. The users in the conversation can know who is now typing.
 
 Part 6.1 (In `MessagesViewController.swift`) [Jump to code](https://github.com/skygear-demo/swift-chat-demo/blob/master/Swift%20Chat%20Demo/MessagesViewController.swift#L186-L200)
 ```swift
@@ -367,7 +367,7 @@ There are two more methods to fetch the user conversation ([Documentation](http:
 - `fetchUserConversation(conversation: SKYConversation, completion: SKYChatUserConversationCompletion?)`
 
 ## Part 10 - Participants of conversation
-We can retreive all the IDs of the participants by accessing the `participantIds` of `SKYConversation` under `SKYUserConversation`:
+We can retrieve all the IDs of the participants by accessing the `participantIds` of `SKYConversation` under `SKYUserConversation`:
 
 ```swift
 let userconversation: SKYUserConversation? = nil
@@ -455,7 +455,7 @@ chat.fetchMessages(conversation: conversation.conversation,
 ```
 
 ## Part 13 - Notification
-There are serveral `NSNotification.Name` extentions from SKYKit, including:
+There are several `NSNotification.Name` extensions from SKYKit, including:
 - `SKYContainerDidChangeCurrentUser`
 - `SKYChatDidReceiveRecordChange`
 - `SKYContainerDidRegisterDevice`
