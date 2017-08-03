@@ -1,6 +1,0 @@
-framework module Pods_Swift_Chat_Demo {
-  umbrella header "Pods-Swift Chat Demo-umbrella.h"
-
-  export *
-  module * { export * }
-}
